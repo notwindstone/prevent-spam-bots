@@ -1,0 +1,24 @@
+{
+  "version": "4",
+  "redirects": {
+    "https://deno.land/x/dotenv/mod.ts": "https://deno.land/x/dotenv@v3.2.2/mod.ts"
+  },
+  "remote": {
+    "https://deno.land/x/dotenv@v3.2.2/mod.ts": "077b48773de9205266a0b44c3c3a3c3083449ed64bb0b6cc461b95720678d38e",
+    "https://deno.land/x/dotenv@v3.2.2/util.ts": "693730877b13f8ead2b79b2aa31e2a0652862f7dc0c5f6d2f313f4d39c7b7670"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@antfu/eslint-config@^4.10.2",
+        "npm:@types/node@^22.13.11",
+        "npm:@verrou/core@~0.5.1",
+        "npm:env-var@^7.5.0",
+        "npm:eslint@^9.22.0",
+        "npm:gramio@~0.2.5",
+        "npm:lru-cache@^11.1.0",
+        "npm:typescript@^5.8.2"
+      ]
+    }
+  }
+}
