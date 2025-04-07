@@ -1,0 +1,22 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm dlx tsx watch --env-file .env src/index.ts",
+    "start": "pnpm dlx tsx --env-file .env --env-file .env src/index.ts",
+    "lint": "pnpm dlx eslint",
+    "lint:fix": "pnpm lint --fix"
+  },
+  "dependencies": {
+    "@verrou/core": "^0.5.1",
+    "env-var": "^7.5.0",
+    "gramio": "^0.2.5",
+    "lru-cache": "^11.1.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.10.2",
+    "@types/node": "^22.13.11",
+    "eslint": "^9.22.0",
+    "typescript": "^5.8.2"
+  }
+}
