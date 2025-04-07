@@ -32,7 +32,7 @@ jobs:
         run: "npm install -g pnpm@latest-10 && pnpm install"
 
       - name: Build step
-        run: "pnpm deploy"
+        run: "pnpm run deploy"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
