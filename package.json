@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "pnpm dlx tsx watch --env-file .env src/index.ts",
     "start": "pnpm dlx tsx --env-file .env src/index.ts",
-    "deploy": "pnpx deno run --allow-env --allow-sys --allow-read --allow-net src/index.ts",
     "lint": "pnpm dlx eslint",
     "lint:fix": "pnpm lint --fix"
   },
