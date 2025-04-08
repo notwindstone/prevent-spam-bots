@@ -15,25 +15,27 @@ const BannedPhrases = [
     "7O",
     "8O",
     "9O",
-    "места ограничены",
-    "занятость",
-    "оплат",
+    "огранич",
+    "занятост",
+    "плат",
     "личка",
-    "личные сообщения",
-    "личных сообщениях",
-    "перспективы",
-    "рублей",
+    "сообщени",
+    "личн",
+    "перспектив",
+    "рубл",
     "партнер",
     "партнёр",
     "$",
-    "регулярные бонусы",
+    "бонус",
     "заработ",
-    "куплю",
+    "купл",
     "курс",
     "договор",
     "usdt",
     "бирж",
     "сумм",
+    "доллар",
+    "доход",
 ];
 const ToReply = "hiiiiii~ :3";
 
@@ -50,8 +52,13 @@ export const bot = new Bot(config.BOT_TOKEN)
     .on("new_chat_members", async (context) => {
         const userId = context.from?.id.toString() ?? "";
 
+        console.log("New user join", userId);
+
         cache.set(userId, 1);
         await context.send(ToReply);
+    })
+    .on("left_chat_member", (context) => {
+        console.log(context);
     })
     .on("message", async (context) => {
         const message = context?.text?.toLowerCase() ?? "";
@@ -65,18 +72,22 @@ export const bot = new Bot(config.BOT_TOKEN)
             return;
         }
 
-        if (message.length <= 20) {
+        if (message.length <= 20 || context.chat.id !== -1001341543913) {
             return;
         }
 
+        console.log(context);
+
         const userId = context.from?.id.toString() ?? "";
         const messagesCount = cache.get(userId);
+
+        console.log(messagesCount);
 
         if (messagesCount === undefined) {
             return;
         }
 
-        if (Number(messagesCount) > 5) {
+        if (Number(messagesCount) > 3) {
             return;
         }
 
