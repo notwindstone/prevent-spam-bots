@@ -1,4 +1,5 @@
 import env from "env-var";
+import "dotenv/config";
 
 export const config = {
     NODE_ENV: env

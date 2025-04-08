@@ -4,12 +4,13 @@
   "scripts": {
     "dev": "pnpm dlx tsx watch --env-file .env src/index.ts",
     "start": "pnpm dlx tsx --env-file .env src/index.ts",
-    "deploy": "pnpm dlx tsx --env-file='.env' src/index.ts",
+    "deploy": "pnpm dlx tsx src/index.ts",
     "lint": "pnpm dlx eslint",
     "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
     "@verrou/core": "^0.5.1",
+    "dotenv": "^16.4.7",
     "env-var": "^7.5.0",
     "gramio": "^0.2.5",
     "lru-cache": "^11.1.0"
