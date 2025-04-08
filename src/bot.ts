@@ -76,11 +76,11 @@ export const bot = new Bot(config.BOT_TOKEN)
             return;
         }
 
-        cache.set(userId, Number(messagesCount) + 1);
-
         if (Number(messagesCount) > 5) {
             return;
         }
+
+        cache.set(userId, Number(messagesCount) + 1);
 
         const hasBannedPhrases = BannedPhrases.some((phrase: string) => message.includes(phrase));
 
