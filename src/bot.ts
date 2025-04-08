@@ -2,8 +2,41 @@ import { Bot } from "gramio";
 import { LRUCache } from "lru-cache";
 import { config } from "./config.ts";
 
-const TypeScriptReply = "typescript~ :3";
+const Fukkireta = "https://c.tenor.com/iVNCPdNesGUAAAAC/tenor.gif";
+const BannedPhrases = [
+    "в личку",
+    "в лс",
+    "1O",
+    "2O",
+    "3O",
+    "4O",
+    "5O",
+    "6O",
+    "7O",
+    "8O",
+    "9O",
+    "места ограничены",
+    "занятость",
+    "оплат",
+    "личка",
+    "личные сообщения",
+    "личных сообщениях",
+    "перспективы",
+    "рублей",
+    "партнер",
+    "партнёр",
+    "$",
+    "регулярные бонусы",
+    "заработ",
+    "куплю",
+    "курс",
+    "договор",
+    "usdt",
+    "бирж",
+    "сумм",
+];
 const ToReply = "hiiiiii~ :3";
+
 const options = {
     max: 500,
     ttl: 1000 * 60 * 60 * 24,
@@ -24,7 +57,10 @@ export const bot = new Bot(config.BOT_TOKEN)
         const message = context?.text?.toLowerCase() ?? "";
 
         if (message.includes("typescript") || message.includes("тайпскрипт")) {
-            await context.send(TypeScriptReply);
+            await context.react({
+                emoji: "❤",
+                type: "emoji",
+            });
 
             return;
         }
@@ -33,16 +69,29 @@ export const bot = new Bot(config.BOT_TOKEN)
             return;
         }
 
-        if (!message.endsWith("в лс") && !(message.endsWith("в лс.")) && !(message.endsWith("регулярные бонусы"))) {
-            return;
-        }
-
         const userId = context.from?.id.toString() ?? "";
+        const messagesCount = cache.get(userId);
 
-        if (cache.get(userId) !== 1) {
+        if (messagesCount === undefined) {
             return;
         }
 
+        cache.set(userId, Number(messagesCount) + 1);
+
+        if (Number(messagesCount) > 5) {
+            return;
+        }
+
+        const hasBannedPhrases = BannedPhrases.some((phrase: string) => message.includes(phrase));
+
+        if (!hasBannedPhrases) {
+            return;
+        }
+
+        await bot.api.deleteMessage({
+            chat_id: context.chat.id,
+            message_id: context.id,
+        });
         await bot.api.banChatMember({
             chat_id: context.chat.id,
             user_id: Number(userId),
@@ -51,10 +100,6 @@ export const bot = new Bot(config.BOT_TOKEN)
             chat_id: context.chat.id,
             user_id: Number(userId),
         });
-        await bot.api.deleteMessage({
-            chat_id: context.chat.id,
-            message_id: context.id,
-        });
 
-        await context.sendAnimation("https://media.tenor.com/Y29AXUU6_U0AAAAj/teto-kasane.gif");
+        await context.sendAnimation(Fukkireta);
     });
