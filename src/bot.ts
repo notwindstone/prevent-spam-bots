@@ -3,7 +3,7 @@ import { Bot } from "gramio";
 import { config } from "./config.ts";
 
 const TypescriptKeywords = ["typescript", "тайпскрипт"];
-const GoKeywords = ["golang", "голанг", "го", "go"];
+const GoKeywords = ["golang", "голанг"];
 const Fukkireta = "https://c.tenor.com/iVNCPdNesGUAAAAC/tenor.gif";
 const BannedPhrases = [
     "личк",
@@ -61,21 +61,19 @@ export const bot = new Bot(config.BOT_TOKEN)
                 emoji: "❤‍🔥",
                 type: "emoji",
             });
-
-            return;
         }
         else if (hasGoKeyword) {
             await context.react({
                 emoji: "❤",
                 type: "emoji",
             });
-
-            return;
         }
 
         if (context.chat.id !== -1001341543913) {
             return;
         }
+
+        console.log("New message:", context.text);
 
         const userId = context.from?.id.toString() ?? "";
         const usersDataFile = fs.readFileSync(DataFilePath, "utf-8");
@@ -86,13 +84,27 @@ export const bot = new Bot(config.BOT_TOKEN)
             return;
         }
 
-        const hasBannedPhrases = BannedPhrases.some((phrase: string) => message.includes(phrase));
+        console.log("Message is from a new user !!!", userId);
+
+        const hasBannedPhrases = BannedPhrases.some((phrase: string) => {
+            const hasBannedPhrase = message.includes(phrase);
+
+            if (hasBannedPhrase) {
+                console.log("Banned phrase:", phrase);
+            }
+
+            return hasBannedPhrase;
+        });
 
         if (!hasBannedPhrases) {
+            console.log("Message doesn't have banned phrases. User is verified.");
+
             fs.writeFileSync(DataFilePath, JSON.stringify([...usersData, userId]));
 
             return;
         }
+
+        console.log("Message has banned phrases. Execution starts...");
 
         await bot.api.deleteMessage({
             chat_id: context.chat.id,
