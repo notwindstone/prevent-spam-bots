@@ -2,6 +2,8 @@ import { Bot } from "gramio";
 import { LRUCache } from "lru-cache";
 import { config } from "./config.ts";
 
+const TypescriptKeywords = ["typescript", "тайпскрипт"];
+const GoKeywords = ["golang", "голанг", "го", "go"];
 const Fukkireta = "https://c.tenor.com/iVNCPdNesGUAAAAC/tenor.gif";
 const BannedPhrases = [
     "в личку",
@@ -37,7 +39,8 @@ const BannedPhrases = [
     "доллар",
     "доход",
 ];
-const ToReply = "hiiiiii~ :3";
+const WelcomeReply = "hiiiiii~ :3";
+const TypescriptReply = "typescript~ :3";
 
 const options = {
     max: 500,
@@ -46,24 +49,29 @@ const options = {
 const cache = new LRUCache(options);
 
 export const bot = new Bot(config.BOT_TOKEN)
-    .command("typescript", context => context.send(ToReply))
-    .command("gif", context => context.sendAnimation("https://media.tenor.com/Y29AXUU6_U0AAAAj/teto-kasane.gif"))
+    .command("typescript", context => context.send(TypescriptReply))
+    .command("gif", context => context.sendAnimation(Fukkireta))
     .onStart(({ info }) => console.log(`✨ Bot ${info.username} was started!`))
     .on("new_chat_members", async (context) => {
-        const userId = context.from?.id.toString() ?? "";
-
-        console.log("New user join", userId);
-
-        cache.set(userId, 1);
-        await context.send(ToReply);
+        await context.send(WelcomeReply);
     })
     .on("left_chat_member", (context) => {
         console.log(context);
     })
     .on("message", async (context) => {
         const message = context?.text?.toLowerCase() ?? "";
+        const hasTypescriptKeyword = TypescriptKeywords.some((keyword: string) => message.includes(keyword));
+        const hasGoKeyword = GoKeywords.some((keyword: string) => message.includes(keyword));
 
-        if (message.includes("typescript") || message.includes("тайпскрипт")) {
+        if (hasTypescriptKeyword) {
+            await context.react({
+                emoji: "❤‍🔥",
+                type: "emoji",
+            });
+
+            return;
+        }
+        else if (hasGoKeyword) {
             await context.react({
                 emoji: "❤",
                 type: "emoji",
