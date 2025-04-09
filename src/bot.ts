@@ -1,12 +1,12 @@
+import fs from "node:fs";
 import { Bot } from "gramio";
-import { LRUCache } from "lru-cache";
 import { config } from "./config.ts";
 
 const TypescriptKeywords = ["typescript", "тайпскрипт"];
 const GoKeywords = ["golang", "голанг", "го", "go"];
 const Fukkireta = "https://c.tenor.com/iVNCPdNesGUAAAAC/tenor.gif";
 const BannedPhrases = [
-    "в личку",
+    "личк",
     "в лс",
     "1O",
     "2O",
@@ -20,7 +20,6 @@ const BannedPhrases = [
     "огранич",
     "занятост",
     "плат",
-    "личка",
     "сообщени",
     "личн",
     "перспектив",
@@ -41,22 +40,16 @@ const BannedPhrases = [
 ];
 const WelcomeReply = "hiiiiii~ :3";
 const TypescriptReply = "typescript~ :3";
-
-const options = {
-    max: 500,
-    ttl: 1000 * 60 * 60 * 24,
-};
-const cache = new LRUCache(options);
+const DataFilePath = "./src/data/users.json";
 
 export const bot = new Bot(config.BOT_TOKEN)
     .command("typescript", context => context.send(TypescriptReply))
     .command("gif", context => context.sendAnimation(Fukkireta))
-    .onStart(({ info }) => console.log(`✨ Bot ${info.username} was started!`))
+    .onStart(({ info }) => {
+        console.log(`✨ Bot ${info.username} was started!`);
+    })
     .on("new_chat_members", async (context) => {
         await context.send(WelcomeReply);
-    })
-    .on("left_chat_member", (context) => {
-        console.log(context);
     })
     .on("message", async (context) => {
         const message = context?.text?.toLowerCase() ?? "";
@@ -80,30 +73,24 @@ export const bot = new Bot(config.BOT_TOKEN)
             return;
         }
 
-        if (message.length <= 20 || context.chat.id !== -1001341543913) {
+        if (context.chat.id !== -1001341543913) {
             return;
         }
-
-        console.log(context);
 
         const userId = context.from?.id.toString() ?? "";
-        const messagesCount = cache.get(userId);
+        const usersDataFile = fs.readFileSync(DataFilePath, "utf-8");
+        const usersData: Array<string> = JSON.parse(usersDataFile);
+        const users = new Set(usersData);
 
-        console.log(messagesCount);
-
-        if (messagesCount === undefined) {
+        if (users.has(userId)) {
             return;
         }
-
-        if (Number(messagesCount) > 3) {
-            return;
-        }
-
-        cache.set(userId, Number(messagesCount) + 1);
 
         const hasBannedPhrases = BannedPhrases.some((phrase: string) => message.includes(phrase));
 
         if (!hasBannedPhrases) {
+            fs.writeFileSync(DataFilePath, JSON.stringify([...usersData, userId]));
+
             return;
         }
 
@@ -120,5 +107,9 @@ export const bot = new Bot(config.BOT_TOKEN)
             user_id: Number(userId),
         });
 
-        await context.sendAnimation(Fukkireta);
+        const hasLastName = Boolean(context.from?.lastName);
+
+        await context.sendAnimation(Fukkireta, {
+            caption: `kicked @${context.from?.username} (${context.from?.firstName}${hasLastName ? ` ${context.from?.lastName}` : ""}) for the next message:\n\n${context.text}`,
+        });
     });

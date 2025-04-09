@@ -12,8 +12,7 @@
     "@verrou/core": "^0.5.1",
     "dotenv": "^16.4.7",
     "env-var": "^7.5.0",
-    "gramio": "^0.2.5",
-    "lru-cache": "^11.1.0"
+    "gramio": "^0.2.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.10.2",
