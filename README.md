@@ -6,13 +6,19 @@ It's really simple and stupid, but it works like a charm for me. When a new mess
 
 Unfortunately, the telegram bot api doesn't fire `new_chat_member` events in supergroups. And somehow this shitty api doesn't even provide a method to fetch all chat members. I was too lazy to write a workaround for this.
 
-### Stack
+## Screenshots
+
+<div align="center">
+  <img width="500" src="https://github.com/user-attachments/assets/789c6d0b-540c-4bd1-9d92-48a2a366c306" alt="example of spam bot detection">
+</div>
+
+## Stack
 - Telegram Bot API framework - [GramIO](https://gramio.dev/)
 - Linter - [ESLint](https://eslint.org/)
 
 ## Setup
 
-Create `.env` file based on `.env.example` and paste your bot token there.
+Create a `.env` file based on `.env.example` and paste your bot token there.
 
 ## Development
 
