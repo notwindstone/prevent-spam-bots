@@ -4,7 +4,7 @@ It's really simple and stupid, but it works like a charm for me. When a new mess
 
 ## Why does it use a shitty strategy to detect bots?
 
-Unfortunately, the telegram bot api doesn't fire `new_chat_member` events in supergroups. And somehow this shitty api doesn't even provide a method to fetch all chat members. I was too lazy to write a workaround for this.
+Unfortunately, the telegram bot api doesn't fire `new_chat_member` events in supergroups. And somehow this shitty api doesn't even provide a method to fetch all chat members. I was too lazy to write a better workaround for this.
 
 ## Screenshots
 
