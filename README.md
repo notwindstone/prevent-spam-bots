@@ -1,6 +1,6 @@
 ## How it works?
 
-It's really simple and stupid, but it works like a charm for me. When a new message appears, a bot will check its sender ID. If the sender ID is in ./src/data/users.json, it will not do any checks because this file stores verified users. If the sender ID is NOT in the file, the bot will check message content if it has some "banned keywords". If it doesn't, the sender ID will be written to the file. If it does, the user will be kicked out of the chat, and the message will be deleted.
+It's really simple and stupid, but it works like a charm for me. When a new message appears, a bot will check its sender ID. If the sender ID is in ./src/data/users.json, it will not do any checks because this file stores verified users. If the sender ID is NOT in the file, the bot will check message content if it has some "banned keywords". If it doesn't have, the sender ID will be written to the file. If it does have, the user will be kicked out of the chat, and the message will be deleted.
 
 ## Why does it use a shitty strategy to detect bots?
 
