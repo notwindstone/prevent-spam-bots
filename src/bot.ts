@@ -5,6 +5,7 @@ import { config } from "./config.ts";
 const TypescriptKeywords = ["typescript", "тайпскрипт"];
 const GoKeywords = ["golang", "голанг"];
 const Fukkireta = "https://c.tenor.com/iVNCPdNesGUAAAAC/tenor.gif";
+const LowTierGod = "https://c.tenor.com/3UGqZQ9It44AAAAC/tenor.gif";
 const BannedPhrases = [
     "личк",
     "в лс",
@@ -45,6 +46,7 @@ const DataFilePath = "./src/data/users.json";
 export const bot = new Bot(config.BOT_TOKEN)
     .command("typescript", context => context.send(TypescriptReply))
     .command("gif", context => context.sendAnimation(Fukkireta))
+    .command("fban", context => context.sendAnimation(LowTierGod))
     .onStart(({ info }) => {
         console.log(`✨ Bot ${info.username} was started!`);
     })
