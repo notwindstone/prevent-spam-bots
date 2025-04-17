@@ -40,10 +40,31 @@ const BannedPhrases = [
     "доход",
 ];
 const WelcomeReply = "hiiiiii~ :3";
+const SilentModeReply = "shhh!";
+const NonSilentModeReply = "uhm?";
 const TypescriptReply = "typescript~ :3";
 const DataFilePath = "./src/data/users.json";
+const RuntimeConfigFilePath = "./src/data/config.json";
 
 export const bot = new Bot(config.BOT_TOKEN)
+    .command("silent", (context) => {
+        const runtimeConfigFile = fs.readFileSync(RuntimeConfigFilePath, "utf-8");
+        const { silent }: {
+            silent: boolean;
+        } = JSON.parse(runtimeConfigFile);
+
+        fs.writeFileSync(RuntimeConfigFilePath, JSON.stringify({
+            silent: !silent,
+        }));
+
+        if (silent) {
+            context.send(NonSilentModeReply);
+
+            return;
+        }
+
+        context.send(SilentModeReply);
+    })
     .command("typescript", context => context.send(TypescriptReply))
     .command("gif", context => context.sendAnimation(Fukkireta))
     .command("fban", context => context.sendAnimation(LowTierGod))
@@ -121,9 +142,19 @@ export const bot = new Bot(config.BOT_TOKEN)
             user_id: Number(userId),
         });
 
+        const runtimeConfigFile = fs.readFileSync(RuntimeConfigFilePath, "utf-8");
+        const { silent }: {
+            silent: boolean;
+        } = JSON.parse(runtimeConfigFile);
+
+        if (silent) {
+            return;
+        }
+
         const hasLastName = Boolean(context.from?.lastName);
+        const hasUsername = Boolean(context.from?.username);
 
         await context.sendAnimation(Fukkireta, {
-            caption: `kicked @${context.from?.username} (${context.from?.firstName}${hasLastName ? ` ${context.from?.lastName}` : ""}) for the next message:\n\n${context.text}`,
+            caption: `kicked ${hasUsername ? `@${context.from?.username} ` : ""}(${context.from?.firstName}${hasLastName ? ` ${context.from?.lastName}` : ""}) for the next message:\n\n${context.text}`,
         });
     });
