@@ -39,15 +39,24 @@ const BannedPhrases = [
     "доллар",
     "доход",
 ];
+
 const WelcomeReply = "hiiiiii~ :3";
 const SilentModeReply = "shhh!";
 const NonSilentModeReply = "uhm?";
 const TypescriptReply = "typescript~ :3";
+const NotYourChat = "this command is not intended for the current chat! (тут шлюхоботов просто нет)";
+
 const DataFilePath = "./src/data/users.json";
 const RuntimeConfigFilePath = "./src/data/config.json";
 
 export const bot = new Bot(config.BOT_TOKEN)
     .command("silent", (context) => {
+        if (context.chat.id !== -1001341543913) {
+            context.send(NotYourChat);
+
+            return;
+        }
+
         const runtimeConfigFile = fs.readFileSync(RuntimeConfigFilePath, "utf-8");
         const { silent }: {
             silent: boolean;
